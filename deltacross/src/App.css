@@ -1,0 +1,422 @@
+* {
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+    font-family: 'Ubuntu', system-ui, sans-serif;
+}
+:root {
+    --text-color: #f5f5f5;
+    --text-color-2: #858585;
+    --body-color: #0a1a2a;
+    --darker: #00000088;
+    --darkest: #000000BB;
+    --navbar-color: #0A0A0A;
+    --primary-color: #3df5fe;
+    --call-to-action:#0e124b;
+    --danger:#f73170;
+    --transition: 0.2s ease-in-out;
+}
+
+body {
+    background-color: var(--body-color);
+}
+
+.material-symbols-outlined {
+    font-size: 1.25rem;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+}
+.material-symbols-filled {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+}
+.playground {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100svh;
+    overflow: auto;
+    gap: 1rem;
+    
+    padding: 1rem;
+}
+.playground > * {
+    flex-shrink: 0;
+    flex-grow: 0;
+   }
+   
+.wrapper {
+    display: grid;
+    grid-template-columns: max-content auto;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+}
+.navbar {
+    height: 100svh;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: fit-content;
+    padding: 1rem 0 1rem 1rem;
+    background: #0A0A0A;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.navbar ul li {
+    --border_radius: 1rem;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    color: var(--text-color);
+    border-radius: var(--border_radius) 0 0 var(--border_radius);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.navbar ul li:hover {
+    background-color: var(--darker);
+}
+
+.navbar ul li.active {
+    background-color: var(--body-color);
+    color: var(--primary-color)
+}
+
+.navbar ul li.active::before {
+    z-index: 10;
+    content: '';
+    background-color: var(--navbar-color);
+    width: var(--border_radius);
+    height: var(--border_radius);
+    position: absolute;
+    bottom: calc(var(--border_radius) * -1);
+    right: 0;
+    border-radius: 0 var(--border_radius) 0 0;
+    box-shadow:  calc(var(--border_radius) * 0.2) calc(var(--border_radius) * -0.2) 0 calc(var(--border_radius) * 0.2) var(--body-color);
+    
+    
+}
+.navbar ul li.active::after {
+    z-index: 10;
+    content: '';
+    background-color: var(--navbar-color);
+    width: var(--border_radius);
+    height: var(--border_radius);
+    position: absolute;
+    top: calc(var(--border_radius) * -1);
+    right: 0;
+    border-radius: 0 0 var(--border_radius) 0;
+    box-shadow:  calc(var(--border_radius) * 0.2) calc(var(--border_radius) * 0.2) 0 calc(var(--border_radius) * 0.2) var(--body-color);
+}
+
+
+
+/* textBox */
+.inputWrapper {
+    --border-color: var(--call-to-action);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: var(--darker);
+    color: var(--text-color);
+    outline: none;
+    width: 20rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    position: relative;
+    transition: var(--transition);
+}
+.inputWrapper .textBox {
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    outline: none;
+    width: 100%;
+}
+.inputWrapper .textBox:focus {
+    border: none;
+    outline: none;
+}
+.inputWrapper .showButton {
+    border: 1px solid var(--border-color);
+    color: var(--border-color);
+    border-radius: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.25rem 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: var(--transition);
+}
+.inputWrapper .showButton:focus {
+    box-shadow: 0 0 2px 2px var(--border-color);
+    outline: none;
+}
+.inputWrapper .showButton span {
+    font-size: 1rem;
+    line-height: 0;
+    color: var(--border-color);
+    transition: var(--transition);
+}
+.inputWrapper .showButton:active { background-color: var(--darker);}
+/* textBox decorations */
+.inputWrapper:has(> .textBox:focus) { --border-color: var(--primary-color); }
+.inputWrapper:has(> .textBox:invalid) { --border-color: var(--danger);}
+.inputWrapper:has(> .tooltip) .tooltip {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(calc(100% + 0.5rem));
+    border-radius: 1rem;
+    width: fit-content;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--darker);
+    color: var(--text-color);
+    visibility: hidden;
+    opacity: 0;
+    transition: var(--transition);
+}
+.inputWrapper:has(> .tooltip):hover .tooltip,
+.inputWrapper:has(> .tooltip):has(> .textBox:focus) .tooltip
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+/* button */
+.buttonSecondary {
+    --border-color: var(--call-to-action);
+    --border-color-focus: var(--primary-color);
+    color: var(--text-color);
+    background-color: var(--call-to-action);
+}
+
+.button {
+    padding: 0.25rem 1rem;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    transition: var(--transition);
+}
+.button:active {
+    background-color: var(--darker);
+}
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 1px 1px var(--border-color-focus);
+}
+
+
+
+
+
+/* product card */
+.productCard {
+    --padding: 0.5rem;
+    width: 30rem;
+    height: 20rem;
+    display: flex;
+    flex-direction: row;
+    border-radius: 1rem;
+    /* overflow: hidden; */
+    background: var(--darker);
+    padding: 0.5rem;
+    transition: var(--transition);
+    box-shadow: 0 0 0.25rem 0.25rem transparent;
+}
+
+.productCard:hover {
+    box-shadow: 0 0 0.25rem 0.25rem var(--primary-color);
+}
+.productCard .left {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.productCard .left img {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+}
+.productCard .left .rating {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--primary-color);
+    background: var(--darkest);
+    backdrop-filter: blur(0.5rem);
+    transition: var(--transition);
+    border-radius: 1rem;
+}
+.productCard .left:hover .rating {
+    visibility: visible;
+    opacity: 1;
+    transition: var(--transition);
+    padding: 0.5rem;
+}
+.productCard .right {
+    display: flex;
+    flex-direction: column;
+    padding: 0rem 0rem 0rem 0.5rem;
+    gap: 0.5rem;
+    color: var(--text-color);
+    line-height: 1;
+    justify-content: space-between;
+    width: 50%;
+}
+.productCard .right .cardOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 1rem;
+}
+.productCard .right .cardOptions .stockCount, 
+.productCard .right .cardOptions .price, 
+.productCard .right .cardOptions .purchase {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    width: 100%;
+    gap: 0.5rem;
+}
+.productCard .right .cardOptions {
+    height: max-content;
+}
+.productCard .right h2 {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+}
+
+
+
+
+
+/* rating star */
+.ratingStar {
+    width: fit-content;
+    line-height: 1rem;
+    position: relative;
+}
+.ratingStar .color {
+    color: gold;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+
+}
+
+
+
+
+
+
+/* Price Tag */
+.priceTag {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    gap: 1rem;
+}
+.priceTag .before {
+    color: var(--text-color-2);
+    text-decoration: line-through 0.15rem;
+}
+
+
+
+
+
+/* Tagging Pill */
+.taggingPillContainer::-webkit-scrollbar { display: none;}
+.taggingPillContainer::-moz-scrollbar { display: none;}
+.taggingPillContainer {
+    width: 100%;
+    max-height: 8rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-start ;
+    align-items: flex-start;
+    overflow: scroll;
+}
+.taggingPill {
+    width: fit-content;
+    height: min-content;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem 0.5rem;
+}
+
+
+
+
+/* horizontal panel */
+.panel {width: 100%;}
+.horizontalPanel::-webkit-scrollbar {display: none;}
+.horizontalPanel::-moz-scrollbar {display: none;}
+.horizontalPanel {
+    width: 100%; 
+    overflow: scroll; 
+    display: flex; 
+    flex-direction: row; 
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: 1rem;
+    scroll-padding-inline-end: 1rem;
+    scroll-behavior: smooth;
+    /* scrollbar-width: none; firefox */
+    padding: 0.5rem 1rem;
+}
+.horizontalPanel > *{
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    position: relative;
+}
+.panel h1 {
+    color: var(--text-color)
+}
